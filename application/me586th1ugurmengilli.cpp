@@ -80,14 +80,17 @@ void me586th1ugurmengilli::on_boardSize_valueChanged(int value)
 void me586th1ugurmengilli::on_fillRandomButton_clicked()
 {
 	int tileCount = powf(ui.boardSize->value(), 2);	// The number of tiles on the board.
-													// Generate a list containing all required numbers to set the text of the tiles.
+	
+	// Generate a list containing all required numbers to set the text of the tiles.
 	QList<int> numbers;
 	for (size_t i = 0; i < tileCount; i++)
 		numbers.append(i);
 	// Shuffle the list so that the numbers are distributed randomly.
 	std::random_shuffle(numbers.begin(), numbers.end());
-	// Display the random state
-	displayBoardState(numbers);
+
+	// Display the random state if given numbers are valid
+	if (puzzle->setCurrentState(numbers))
+		displayBoardState(numbers);
 }
 
 void me586th1ugurmengilli::on_generateBoardButton_clicked()

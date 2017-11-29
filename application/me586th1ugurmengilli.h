@@ -12,7 +12,6 @@ public:
 	me586th1ugurmengilli(QWidget *parent = 0);
 	~me586th1ugurmengilli();
 
-	void setBoardSize(int n);
 
 private:
 	Ui::me586th1ugurmengilliClass ui;

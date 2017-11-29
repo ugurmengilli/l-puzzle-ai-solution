@@ -2,6 +2,7 @@
 #define ME586TH1UGURMENGILLI_H
 
 #include <QtWidgets/QMainWindow>
+#include "lpuzzle.h"
 #include "ui_me586th1ugurmengilli.h"
 
 class me586th1ugurmengilli : public QMainWindow
@@ -12,9 +13,9 @@ public:
 	me586th1ugurmengilli(QWidget *parent = 0);
 	~me586th1ugurmengilli();
 
-	void setBoardSize(int n);
 
 private:
+	LPuzzle *puzzle;
 	Ui::me586th1ugurmengilliClass ui;
 };
 

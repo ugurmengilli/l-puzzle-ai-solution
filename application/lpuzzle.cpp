@@ -23,6 +23,38 @@ LPuzzle::State LPuzzle::getCurrentState()
 	return mCurrentState;
 }
 
+LPuzzle::State LPuzzle::moveTile(MoveDirection dir, int emptyTileIndex)
+{
+	if (mCurrentState.count() == 0)	// Current state is not initialized.
+		return State();				// return immediately.
+	if (emptyTileIndex == -1)
+		emptyTileIndex = mCurrentState.indexOf(0);	// Index of the empty tile.
+
+	int newTileIndex;
+	switch (dir) {
+	case LPuzzle::Up:
+		if ((emptyTileIndex % mSize) > 0)			// Top edge test
+			newTileIndex -= mSize;
+		break;
+	case LPuzzle::Right:
+		if ((emptyTileIndex / mSize) < (mSize - 1))	// Right edge test
+			newTileIndex += 1;
+		break;
+	case LPuzzle::Down:
+		if ((emptyTileIndex % mSize) < (mSize - 1))	// Bottom edge test
+			newTileIndex += mSize;
+		break;
+	case LPuzzle::Left:
+		if ((emptyTileIndex / mSize) > 0)			// Left edge test
+			newTileIndex -= 1;
+		break;
+	default:
+		break;
+	}
+	mCurrentState.swap(emptyTileIndex, newTileIndex);
+	return mCurrentState;
+}
+
 bool LPuzzle::setCurrentState(State state)
 {
 	int tileCount = getSize() * getSize();	// Number of tiles

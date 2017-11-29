@@ -6,8 +6,29 @@ LPuzzle::LPuzzle(int n, QObject *parent) :
 	setSize(n);
 }
 
+LPuzzle::LPuzzle(QList<int> initialState, int n, QObject *parent) :
+	LPuzzle(n, parent)
+{
+	mCurrentState = initialState;
+}
+
 LPuzzle::~LPuzzle()
 {
+}
+
+bool LPuzzle::setCurrentState(QList<int> state)
+{
+	int tileCount = getSize() * getSize();	// Number of tiles
+
+	for (int tile = 0; tile < tileCount; tile++) {
+		// Each and every tile should exist and should occur only once.
+		if (state.count(tile) == 1)
+			continue;
+		else
+			return false;	// Otherwise, given state is not obey the game rules.
+	}
+	mCurrentState = state;
+	return true;
 }
 
 void LPuzzle::setSize(int n)

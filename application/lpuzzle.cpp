@@ -1,3 +1,5 @@
+#include <QList>
+#include <QVector>
 #include "lpuzzle.h"
 
 LPuzzle::LPuzzle(int n, QObject *parent) :
@@ -6,7 +8,7 @@ LPuzzle::LPuzzle(int n, QObject *parent) :
 	setSize(n);
 }
 
-LPuzzle::LPuzzle(QList<int> initialState, int n, QObject *parent) :
+LPuzzle::LPuzzle(State initialState, int n, QObject *parent) :
 	LPuzzle(n, parent)
 {
 	mCurrentState = initialState;
@@ -16,12 +18,12 @@ LPuzzle::~LPuzzle()
 {
 }
 
-QList<int> LPuzzle::getCurrentState()
+LPuzzle::State LPuzzle::getCurrentState()
 {
 	return mCurrentState;
 }
 
-bool LPuzzle::setCurrentState(QList<int> state)
+bool LPuzzle::setCurrentState(State state)
 {
 	int tileCount = getSize() * getSize();	// Number of tiles
 

@@ -16,6 +16,11 @@ LPuzzle::~LPuzzle()
 {
 }
 
+QList<int> LPuzzle::getCurrentState()
+{
+	return mCurrentState;
+}
+
 bool LPuzzle::setCurrentState(QList<int> state)
 {
 	int tileCount = getSize() * getSize();	// Number of tiles

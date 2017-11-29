@@ -6,11 +6,6 @@ me586th1ugurmengilli::me586th1ugurmengilli(QWidget *parent)
 	board(nullptr)
 {
 	ui.setupUi(this);
-
-	// Setup the L-puzzle according to GUI
-	puzzle = new LPuzzle(ui.boardSize->value(), this);
-	// Update the GUI if there is a change
-	ui.boardSize->setValue(puzzle->getSize());
 }
 
 me586th1ugurmengilli::~me586th1ugurmengilli()
@@ -50,21 +45,25 @@ void me586th1ugurmengilli::generateBoard(int n)
 	// If there is board already, clear the board then generate a new board.
 	if (board != nullptr)
 		clearBoard();
+
 	// Create an empty widget to contain tiles of the board so that when the widget is deleted, all the board can be cleared. Setting the parent as displayBox puts the board into 'Display' group.
 	board = new QWidget(ui.displayBox);
-	// Move to board to the just beneath a label.
+	// Move the board to the just beneath a label.
 	board->move(ui.generateLabel->x(),
 		ui.generateLabel->y() + ui.generateLabel->height() + 5);
+
 	// We want all tiles to be generated in a 2D matrix form. Qt provides such layout via following. By setting the board as parent, the grid is automatically deleted from the memory.
 	QGridLayout* boardLayout = new QGridLayout(board);
 	// Fill the board with tiles.
-	for (size_t i = 0; i < n*n; i++)
-	{
+	for (size_t i = 0; i < n*n; i++) {
 		QPushButton* tile = new QPushButton(board);	// Tiles are implemented as buttons.
 		boardLayout->addWidget(tile, i % n, i / n);		// Add tiles to the board in given x-y indices.
 	}
 	board->setLayout(boardLayout);
 	board->show();
+
+	// Setup the L-puzzle according to GUI
+	puzzle = new LPuzzle(n, this);
 }
 
 void me586th1ugurmengilli::on_boardSize_valueChanged(int value)
@@ -92,8 +91,10 @@ void me586th1ugurmengilli::on_generateBoardButton_clicked()
 	// This button can be used for two functionality: generate a board and clear the board. The correct functionality is determined by the text on the button.
 	if (ui.generateBoardButton->text() == "Generate Board") {
 		generateBoard(ui.boardSize->value());
-		ui.generateBoardButton->setText("Clear Board");
+		
+		// Set the random-fill button available to the user after the board is generated
 		ui.fillRandomButton->setEnabled(true);
+		ui.generateBoardButton->setText("Clear Board");
 	}
 	else if (ui.generateBoardButton->text() == "Clear Board") {
 		clearBoard();

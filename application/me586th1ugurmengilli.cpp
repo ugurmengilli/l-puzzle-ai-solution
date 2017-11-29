@@ -6,6 +6,9 @@ me586th1ugurmengilli::me586th1ugurmengilli(QWidget *parent)
 	board(nullptr)
 {
 	ui.setupUi(this);
+
+	// Currently set the button unavailable to the user since the board is absent.
+	ui.fillRandomButton->setEnabled(false);
 }
 
 me586th1ugurmengilli::~me586th1ugurmengilli()
@@ -16,6 +19,7 @@ me586th1ugurmengilli::~me586th1ugurmengilli()
 
 void me586th1ugurmengilli::clearBoard()
 {
+	delete puzzle;		// After clearance, everything should be recreated.
 	delete board;		// Reclaim the memory from heap.
 	board = nullptr;	// Set the address of the pointer to null since all checks are done using this property.
 }
@@ -98,6 +102,7 @@ void me586th1ugurmengilli::on_generateBoardButton_clicked()
 	}
 	else if (ui.generateBoardButton->text() == "Clear Board") {
 		clearBoard();
+		ui.fillRandomButton->setEnabled(false);	// since the board doesn't exist anymore
 		ui.generateBoardButton->setText("Generate Board");
 	}
 }

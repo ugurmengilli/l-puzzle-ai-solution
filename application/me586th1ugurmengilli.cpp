@@ -19,6 +19,7 @@ me586th1ugurmengilli::~me586th1ugurmengilli()
 
 void me586th1ugurmengilli::clearBoard()
 {
+	delete puzzle;		// After clearance, everything should be recreated.
 	delete board;		// Reclaim the memory from heap.
 	board = nullptr;	// Set the address of the pointer to null since all checks are done using this property.
 }

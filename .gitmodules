@@ -1,0 +1,3 @@
+[submodule "ai-algorithms"]
+	path = ai-algorithms
+	url = https://github.com/ugurmengilli/ai-algorithms.git

@@ -11,7 +11,7 @@ LPuzzle::LPuzzle(int n, QObject *parent) :
 LPuzzle::LPuzzle(State initialState, int n, QObject *parent) :
 	LPuzzle(n, parent)
 {
-	mCurrentState = initialState;
+	setCurrentState(initialState);
 }
 
 LPuzzle::~LPuzzle()

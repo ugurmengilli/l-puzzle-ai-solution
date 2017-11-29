@@ -8,8 +8,6 @@ class LPuzzle :	public QObject
 {
 	Q_OBJECT
 
-	typedef QList<int> State;
-
 	enum MoveDirection {
 		Up,
 		Right,
@@ -18,6 +16,8 @@ class LPuzzle :	public QObject
 	};
 
 public:
+	typedef QList<int> State;
+
 	LPuzzle(int n = 3, QObject *parent = 0);
 	LPuzzle(State initialState, int n = 3, QObject *parent = 0);
 	~LPuzzle();
@@ -25,11 +25,18 @@ public:
 	/// <summary> Gets current puzzle state.</summary>
 	/// <return> Representation of the puzzle state. </return>
 	State getCurrentState();
+	/// <summary> Gets the successors of the current state </summary>
+	/// <param name='successors'> successors of the current state of the puzzle. </param name>
+	void getSuccessors(QVector<State>& successors);
+	/// <summary> Checks if puzzle is currently initialized to a valid state. </summary>
+	/// <return> True if initialized, false otherwise.</return>
+	bool initialized();
 	/// <summary> Moves the empty tile in the given direction if possible.</summary>
 	/// <param name='dir'> Tile move direction.</param name>
 	/// <param name='emptyTileIndex'> Position of the empty tile in the puzzle state.</param name>
 	/// <return> moved state if possible, empty state otherwise.</return>
 	State moveTile(MoveDirection dir, int emptyTileIndex = -1);
+	static State moveTile(const State currentState, MoveDirection dir, int emptyTileIndex = -1);
 	/// <summary> Sets the state of the puzzle checking the validity of the state. Validity is determined regardles of previous state (if previously set to a state); that is the empty tile can jump into a place that it wouldn't in a sequence.</summary>
 	/// <param name='state'> Any allowable puzzle state concerning the game rules.</param name>
 	/// <return> True if given state is allowable; False, otherwise. </return>

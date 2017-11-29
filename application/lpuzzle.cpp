@@ -23,36 +23,70 @@ LPuzzle::State LPuzzle::getCurrentState()
 	return mCurrentState;
 }
 
+void LPuzzle::getSuccessors(QVector<State>& successors)
+{
+	if (!initialized())		// If puzzle is not initialized, return.
+		return;
+	
+	int emptyTileIndex = mCurrentState.indexOf(0);	// Index of the empty tile.
+
+	for (size_t i = 0; i < 4; i++) {
+		// If empty tile can move to in i-th direction, then that state is a successor
+		State successor = moveTile(mCurrentState, static_cast<MoveDirection>(i), emptyTileIndex);
+		if (!successor.isEmpty())
+			successors.append(successor);
+	}
+	return;
+}
+
+bool LPuzzle::initialized()
+{
+	if (mCurrentState.count())	// Current state is greater than zero.
+		return true;
+	return false;
+}
+
 LPuzzle::State LPuzzle::moveTile(MoveDirection dir, int emptyTileIndex)
 {
-	if (mCurrentState.count() == 0)	// Current state is not initialized.
-		return State();				// return immediately.
-	if (emptyTileIndex == -1)
-		emptyTileIndex = mCurrentState.indexOf(0);	// Index of the empty tile.
+	if (!initialized())		// Current state is not initialized.
+		return State();		// return immediately.
 
-	int newTileIndex;
+	return moveTile(mCurrentState, dir, emptyTileIndex);
+}
+
+LPuzzle::State LPuzzle::moveTile(const State currentState, MoveDirection dir, int emptyTileIndex)
+{
+	State state = currentState;
+	if (emptyTileIndex == -1)
+		emptyTileIndex = state.indexOf(0);	// Index of the empty tile.
+	int size = sqrt(state.count());
+
+	int newTileIndex = emptyTileIndex;
 	switch (dir) {
 	case LPuzzle::Up:
-		if ((emptyTileIndex % mSize) > 0)			// Top edge test
-			newTileIndex -= mSize;
+		if ((emptyTileIndex % size) > 0)			// Top edge test
+			newTileIndex -= 1;
 		break;
 	case LPuzzle::Right:
-		if ((emptyTileIndex / mSize) < (mSize - 1))	// Right edge test
-			newTileIndex += 1;
+		if ((emptyTileIndex / size) < (size - 1))	// Right edge test
+			newTileIndex += size;
 		break;
 	case LPuzzle::Down:
-		if ((emptyTileIndex % mSize) < (mSize - 1))	// Bottom edge test
-			newTileIndex += mSize;
+		if ((emptyTileIndex % size) < (size - 1))	// Bottom edge test
+			newTileIndex += 1;
 		break;
 	case LPuzzle::Left:
-		if ((emptyTileIndex / mSize) > 0)			// Left edge test
-			newTileIndex -= 1;
+		if ((emptyTileIndex / size) > 0)			// Left edge test
+			newTileIndex -= size;
 		break;
 	default:
 		break;
 	}
-	mCurrentState.swap(emptyTileIndex, newTileIndex);
-	return mCurrentState;
+	if (newTileIndex == emptyTileIndex)
+		state.clear();
+	else
+		state.swap(emptyTileIndex, newTileIndex);
+	return state;
 }
 
 bool LPuzzle::setCurrentState(State state)

@@ -6,6 +6,9 @@ me586th1ugurmengilli::me586th1ugurmengilli(QWidget *parent)
 	board(nullptr)
 {
 	ui.setupUi(this);
+
+	// Currently set the button unavailable to the user since the board is absent.
+	ui.fillRandomButton->setEnabled(false);
 }
 
 me586th1ugurmengilli::~me586th1ugurmengilli()
@@ -98,6 +101,7 @@ void me586th1ugurmengilli::on_generateBoardButton_clicked()
 	}
 	else if (ui.generateBoardButton->text() == "Clear Board") {
 		clearBoard();
+		ui.fillRandomButton->setEnabled(false);	// since the board doesn't exist anymore
 		ui.generateBoardButton->setText("Generate Board");
 	}
 }

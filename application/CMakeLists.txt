@@ -23,7 +23,7 @@ file(GLOB UI_FILES "*.ui")
 qt5_wrap_ui(UI_HEADERS ${UI_FILES})
 set(PROJECT_FILES ${UI_FILES} ${PROJECT_FILES})
 
-# Output a static library
+# Output executable
 add_executable(${PROJECT_NAME} ${PROJECT_FILES})
 
 # Link agaist Qt libraries

@@ -6,12 +6,19 @@ LPuzzle::LPuzzle(int n, QObject *parent) :
 	QObject(parent)
 {
 	setSize(n);
+	
+	mCurrentState =	mStart = State();	// Just an empty list
+
+	for (size_t i = 1; i < mSize; i++)
+		mGoal.append(i);	// Set goal state.
+	mGoal.append(0);
 }
 
 LPuzzle::LPuzzle(State initialState, int n, QObject *parent) :
 	LPuzzle(n, parent)
 {
-	setCurrentState(initialState);
+	if (setCurrentState(initialState))
+		mStart = initialState;
 }
 
 LPuzzle::~LPuzzle()
@@ -23,7 +30,7 @@ LPuzzle::State LPuzzle::getCurrentState()
 	return mCurrentState;
 }
 
-void LPuzzle::getSuccessors(QVector<State>& successors)
+void LPuzzle::getSuccessors(QVector<State>& successors) const
 {
 	if (!initialized())		// If puzzle is not initialized, return.
 		return;
@@ -36,10 +43,9 @@ void LPuzzle::getSuccessors(QVector<State>& successors)
 		if (!successor.isEmpty())
 			successors.append(successor);
 	}
-	return;
 }
 
-bool LPuzzle::initialized()
+bool LPuzzle::initialized() const
 {
 	if (mCurrentState.count())	// Current state is greater than zero.
 		return true;

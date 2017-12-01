@@ -3,8 +3,9 @@
 #include <QObject>
 #include <QList>
 #include <QVector>
+#include "aiproblem.h"
 
-class LPuzzle :	public QObject
+class LPuzzle : public AiProblem, public QObject
 {
 	Q_OBJECT
 
@@ -16,8 +17,8 @@ class LPuzzle :	public QObject
 	};
 
 public:
-	typedef QList<int> State;
-
+	typedef AiState State;
+	
 	LPuzzle(int n = 3, QObject *parent = 0);
 	LPuzzle(State initialState, int n = 3, QObject *parent = 0);
 	~LPuzzle();
@@ -27,10 +28,10 @@ public:
 	State getCurrentState();
 	/// <summary> Gets the successors of the current state </summary>
 	/// <param name='successors'> successors of the current state of the puzzle. </param name>
-	void getSuccessors(QVector<State>& successors);
+	void getSuccessors(QVector<State>& successors) const override;
 	/// <summary> Checks if puzzle is currently initialized to a valid state. </summary>
 	/// <return> True if initialized, false otherwise.</return>
-	bool initialized();
+	bool initialized() const;
 	/// <summary> Moves the empty tile in the given direction if possible.</summary>
 	/// <param name='dir'> Tile move direction.</param name>
 	/// <param name='emptyTileIndex'> Position of the empty tile in the puzzle state.</param name>
@@ -50,6 +51,5 @@ public:
 
 private:
 	int mSize;
-	State mCurrentState;
 };
 
